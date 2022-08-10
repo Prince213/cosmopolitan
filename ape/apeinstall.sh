@@ -16,7 +16,7 @@ if [ -f o/depend ]; then
   # mkdeps.com build was successfully run so assume we can build
   echo >&2
   echo "recompiling ape loader" >&2
-  echo "running: make -j8 o//ape" >&2
+  echo "make -j8 o//ape" >&2
   make -j8 o//ape || exit
   echo "done" >&2
 elif [ -d build/bootstrap ]; then
@@ -44,8 +44,8 @@ fi
 if [ "$(uname -s)" = "Darwin" ]; then
   if ! [ /usr/bin/ape -nt o//ape/ape.macho ]; then
     echo >&2
-    echo "installing o//ape/ape.elf to /usr/bin/ape" >&2
-    echo "$SUDO mv -f o//ape/ape.elf /usr/bin/ape" >&2
+    echo "installing o//ape/ape.macho to /usr/bin/ape" >&2
+    echo "$SUDO cp -f o//ape/ape.macho /usr/bin/ape" >&2
     $SUDO cp -f o//ape/ape.macho /usr/bin/ape || exit
     echo "done" >&2
   fi
@@ -53,7 +53,7 @@ else
   if ! [ /usr/bin/ape -nt o//ape/ape.elf ]; then
     echo >&2
     echo "installing o//ape/ape.elf to /usr/bin/ape" >&2
-    echo "$SUDO mv -f o//ape/ape.elf /usr/bin/ape" >&2
+    echo "$SUDO cp -f o//ape/ape.elf /usr/bin/ape" >&2
     $SUDO cp -f o//ape/ape.elf /usr/bin/ape || exit
     echo "done" >&2
   fi
@@ -69,7 +69,7 @@ if [ x"$(uname -s)" = xLinux ]; then
     echo it looks like APE is already registered with binfmt_misc >&2
     echo To reinstall please run ape/apeuninstall.sh first >&2
     echo please check that it is mapped to ape not /bin/sh >&2
-    echo cat /proc/sys/fs/binfmt_misc/APE >&2
+    echo "cat /proc/sys/fs/binfmt_misc/APE" >&2
     cat /proc/sys/fs/binfmt_misc/APE >&2
     exit
   fi
@@ -78,7 +78,7 @@ if [ x"$(uname -s)" = xLinux ]; then
     echo >&2
     echo loading binfmt_misc into your kernel >&2
     echo you may need to edit configs to persist across reboot >&2
-    echo $SUDO modprobe binfmt_misc >&2
+    echo "$SUDO modprobe binfmt_misc" >&2
     $SUDO modprobe binfmt_misc || exit
     echo done >&2
   fi
@@ -87,7 +87,7 @@ if [ x"$(uname -s)" = xLinux ]; then
     echo >&2
     echo mounting binfmt_misc into your kernel >&2
     echo you may need to edit configs to persist across reboot >&2
-    echo $SUDO mount -t binfmt_misc none /proc/sys/fs/binfmt_misc >&2
+    echo "$SUDO mount -t binfmt_misc none /proc/sys/fs/binfmt_misc" >&2
     $SUDO mount -t binfmt_misc none /proc/sys/fs/binfmt_misc || exit
     echo done >&2
   fi
@@ -103,7 +103,7 @@ if [ x"$(uname -s)" = xLinux ]; then
     echo >&2
     echo enabling binfmt_misc >&2
     echo you may need to edit configs to persist across reboot >&2
-    echo $SUDO sh -c 'echo 1 >/proc/sys/fs/binfmt_misc/status' >&2
+    echo "$SUDO sh -c 'echo 1 >/proc/sys/fs/binfmt_misc/status'" >&2
     $SUDO sh -c 'echo 1 >/proc/sys/fs/binfmt_misc/status' || exit
     echo done >&2
   fi
